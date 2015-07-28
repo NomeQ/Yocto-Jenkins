@@ -1,0 +1,67 @@
+*********************************************************************
+                               README
+                            Version 0.0.1
+*********************************************************************
+
+Setting up Yocto-Jenkins
+************************
+
+1. Download the yocto-jenkins directory to your Jenkins home directory
+   (On most unix systems, this will be /var/lib/jenkins)
+
+2. To automatically grab and modify all autobuilder buildsteps, run
+   the buildstep-tool:
+      
+        If the yocto-autobuilder directory is located in your home dir,
+        run: > ./buildstep-tool.sh  
+   
+        Otherwise, pass in the directory containing the yocto-autobuilder
+        > ./buildstep-tool.sh /some/directory/here
+
+3. In Jenkins > Project Name > configuration, click 'Add build step' and
+   choose 'Execute shell'
+
+4. For the Command, enter:
+    
+        #!/bin/bash
+        $JENKINS_HOME/yocto-jenkins/jenkinsBuild.sh [buildsteps] [kwargs]
+
+        e.g. .../jenkinsBuild.sh HelloWorld firstname=Nome lastname=Dickerson
+
+   Note: Steps will be executed in the order they are passed in
+
+5. Build the project
+
+
+Creating Custom Buildsteps
+**************************
+
+1. Add your buildstep to the buildsteps folder within yocto-jenkins
+
+2. The current implementation is based entirely on compatibility with autobuilder
+   buildsteps, thus each step is assumed to receive the parameters factory and
+   argdict. Factory will always be given the value None. To change this default 
+   behavior, modify the file 'buildSteps.py'. 
+
+3. To import the yocto-jenkins stub library, use:
+         from jenkinsBuildSteps.stubs import *
+
+   You can create shell commands by subclassing the ShellCommand class, which will
+   run a string given as the self.command field within a shell process with a 
+   timeout. New buildsteps should also include a name field, which is used to 
+   provide more descriptive output in the logs.
+
+Version Notes
+*************
+
+-This is the initial version of this project. It is not yet compatible with the majority
+ of autobuilder buildsteps.
+
+File List
+*********
+
+buildSteps.py: Parses buildsteps and parameters
+buildstep-tool.sh: Copies autobuilder buildsteps to local directory, modifies code
+jenkinsBuild.sh: Sets up a python virtual environment, runs buildSteps.py
+jenkinsBuildSteps/stubs.py: Class stubs to replace buildbot.process.shell
+
