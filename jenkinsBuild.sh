@@ -5,7 +5,6 @@ if [ -d $PYENV_HOME ]; then
 	echo "Using existing virtual environment"
 else
 	echo "Creating new virtual environment"
-	pip install virtualenv
 	virtualenv --no-site-packages $PYENV_HOME	
 fi
 
