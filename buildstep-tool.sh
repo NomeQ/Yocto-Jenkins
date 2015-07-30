@@ -1,18 +1,17 @@
 #!/bin/bash
 
-# Pass the directory containing the autobuilder buildsteps as param
+# Pass the directory containing the autobuilder buildsteps as param, or it will
+# automatically download from the official yocto-project site
 default="/yocto-autobuilder/lib/python2.7/site-packages/autobuilder/buildsteps"
-if [ -d ~/$default ]; then
-	directory=~/$default
-elif [ $# -eq 1 -a -d $1/$default ]; then
+if [ $# -eq 1 -a -d $1/$default ]; then
 	directory=$1/$default
+	cp -r $directory ./
+	cd buildsteps
 else
-	echo "Buildstep directory not found. Usage: './buildstep-tool.sh [/path/to/autobuilder/buildsteps]"
+	mkdir buildsteps
+	cd buildsteps
+	wget -r -np -A.py -nH --cut-dirs=10 "http://git.yoctoproject.org/cgit/cgit.cgi/yocto-autobuilder/plain/lib/python2.7/site-packages/autobuilder/buildsteps/"
 fi
-
-cp -r $directory ./
-rm ./buildsteps/*.pyc
-cd ./buildsteps
 
 for f in $( ls . ); do
 	sed -i 's/from buildbot.[a-z]*.[a-z]*/from jenkinsBuildSteps.stubs/' "$f"

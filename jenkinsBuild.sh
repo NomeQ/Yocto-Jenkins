@@ -5,10 +5,16 @@ if [ -d $PYENV_HOME ]; then
 	echo "Using existing virtual environment"
 else
 	echo "Creating new virtual environment"
+	pip install virtualenv
 	virtualenv --no-site-packages $PYENV_HOME	
 fi
 
 . $PYENV_HOME/bin/activate
 
-python $JENKINS_HOME/yocto-jenkins/buildSteps.py $@
+if [ ! -d buildsteps ]
+        echo "Running buildstep tool"
+	./buildstep-tool.sh
+fi
+
+python $WORKSPACE/buildSteps.py $@
 
