@@ -10,7 +10,7 @@ fi
 
 . $PYENV_HOME/bin/activate
 
-if [ ! -d buildsteps ]
+if [ ! -d buildsteps ]; then
         echo "Running buildstep tool"
 	./buildstep-tool.sh
 fi
