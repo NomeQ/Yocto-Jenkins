@@ -5,7 +5,7 @@ import os
 jenkinsHome = os.environ.get("JENKINS_HOME")
 workspace = os.environ.get("WORKSPACE")
 yjHome = os.environ.get("YJ_HOME")
-sys.path.append(workspace + "/buildsteps")
+sys.path.append(yjHome + "/buildsteps")
 
 # Factory and args are set up to be compatible with Autobuilder buildsteps, factory always
 # being null here.
