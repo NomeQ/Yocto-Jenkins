@@ -6,16 +6,15 @@
 Setting up Yocto-Jenkins
 ************************
 
-1. Download the yocto-jenkins directory to your Jenkins home directory
-   (On most unix systems, this will be /var/lib/jenkins)
+1. Download the yocto-jenkins files to your Jenkins home directory
+   (On most unix systems, this will be /var/lib/jenkins), or clone it
+   from GitHub into your Jenkins workspace from:
+   git@github.com:nome-codes/Yocto-Jenkins.git
 
-2. To automatically grab and modify all autobuilder buildsteps, run
-   the buildstep-tool:
+2. jenkinsBuild.sh will automatically download the autobuilder buildsteps
+   from the git.yoctoproject.org site using the buildstep-tool. To use a 
+   different buildstep repository, run the script manually with:
       
-        If the yocto-autobuilder directory is located in your home dir,
-        run: > ./buildstep-tool.sh  
-   
-        Otherwise, pass in the directory containing the yocto-autobuilder
         > ./buildstep-tool.sh /some/directory/here
 
 3. In Jenkins > Project Name > configuration, click 'Add build step' and
@@ -24,11 +23,14 @@ Setting up Yocto-Jenkins
 4. For the Command, enter:
     
         #!/bin/bash
-        $JENKINS_HOME/yocto-jenkins/jenkinsBuild.sh [buildsteps] [kwargs]
+        $JENKINS_HOME/jenkinsBuild.sh [buildsteps] [kwargs]
 
         e.g. .../jenkinsBuild.sh HelloWorld firstname=Nome lastname=Dickerson
 
-   Note: Steps will be executed in the order they are passed in
+   Note: Steps will be executed in the order they are passed in. Also, 
+         the path will be different if Jenkins is cloning yocto-jenkins:
+
+	$WORKSPACE/SOME_SUB_DIRECTORY/jenkinsBuild.sh ...
 
 5. Build the project
 
