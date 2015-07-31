@@ -18,5 +18,5 @@ if [ ! -d buildsteps ]; then
 	./buildstep-tool.sh
 fi
 
-python ./buildSteps.py $@
+python $YJ_HOME/buildSteps.py $@
 
