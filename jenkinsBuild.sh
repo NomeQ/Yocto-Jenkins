@@ -1,5 +1,8 @@
 #!/bin/bash
-PYENV_HOME=$WORKSPACE/.pyenv/
+YJ_HOME=`pwd`
+PYENV_HOME=$YJ_HOME/.pyenv/
+
+export YJ_HOME
 
 if [ -d $PYENV_HOME ]; then
 	echo "Using existing virtual environment"
@@ -15,5 +18,5 @@ if [ ! -d buildsteps ]; then
 	./buildstep-tool.sh
 fi
 
-python $WORKSPACE/buildSteps.py $@
+python ./buildSteps.py $@
 
