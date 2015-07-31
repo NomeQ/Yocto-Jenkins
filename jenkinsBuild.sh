@@ -1,8 +1,9 @@
 #!/bin/bash
-YJ_HOME=`pwd`
+YJ_HOME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 PYENV_HOME=$YJ_HOME/.pyenv/
 
 export YJ_HOME
+cd $YJ_HOME
 
 if [ -d $PYENV_HOME ]; then
 	echo "Using existing virtual environment"
@@ -18,5 +19,5 @@ if [ ! -d buildsteps ]; then
 	./buildstep-tool.sh
 fi
 
-python $YJ_HOME/buildSteps.py $@
+python ./buildSteps.py $@
 
