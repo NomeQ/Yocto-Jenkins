@@ -14,6 +14,9 @@ factory = None
 kwargs = {}
 steps = []
 
+#These autobuilder steps are redundant or incompatible with Jenkins
+badsteps = ["CheckOutLayers", "SendErrorReport", "SendQAEmail", "SetDest", "TriggerBuilds"]
+
 def parseBuildstep(arg):
     if "=" in arg:
         key, value = arg.split("=")
@@ -24,11 +27,13 @@ def parseBuildstep(arg):
 for arg in sys.argv[1:]:
     parseBuildstep(arg)
 
-
 for step in steps:
-    m = __import__ (step)
-    func = getattr(m, step)
-    func(factory, kwargs)
+    if step in badsteps:
+        print step + " is not compatible with Yocto-Jenkins. Skipping."
+    else:
+        m = __import__ (step)
+        func = getattr(m, step)
+        func(factory, kwargs)
 
 flunk = os.environ.get("FLUNK_BUILD")
 if flunk=="True":

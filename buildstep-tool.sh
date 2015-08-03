@@ -15,5 +15,6 @@ fi
 
 for f in $( ls . ); do
 	sed -i 's/from buildbot.[a-z]*.[a-z]*/from jenkinsBuildSteps.stubs/' "$f"
+        sed -i 's/from twisted.python import log/ /' "$f"
 done
  	
