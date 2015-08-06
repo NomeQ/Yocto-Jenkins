@@ -1,8 +1,7 @@
-#!/bin/bash
-YJ_HOME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+!/bin/bash
+export YJ_HOME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 PYENV_HOME=$YJ_HOME/.pyenv/
 
-export YJ_HOME
 cd $YJ_HOME
 
 if [ -d $PYENV_HOME ]; then

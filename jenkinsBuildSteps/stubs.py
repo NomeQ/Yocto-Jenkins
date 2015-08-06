@@ -40,10 +40,22 @@ class BuildStep:
         subprocess.call(fout.split(" ")) 
 
     def getProperty(self, propname):
-        pass
+        if self.properties:
+            return self.properties.getProperty(propname)
+        else:
+            return None
 
     def setProperty(self, propname, value, source='Step'):
-        pass
+        if self.properties:
+            self.properties.setProperty(propname, value, source)
+        else:
+            pass
+    
+    def getProperties(self):
+        if self.properties:
+            return self.properties.getProperties()
+        else:
+            return None        
 
     def describe(self, done=False):
         if done:
@@ -65,8 +77,10 @@ class ShellCommand(LoggingBuildStep):
 	
     def start(self):
         LoggingBuildStep.start(self)
-	if self.timeout is None:
-            self.exit_status = subprocess.call(self.command.split(" "))
+        if type(self.command) is str:
+            self.command = self.command.split(" ")
+	if not hasattr(self, 'timeout'):
+            self.exit_status = subprocess.call(self.command)
         else:
             self.exit_status = self.timeoutCommand(self.command, self.timeout)
         self.commandComplete(self.command)
@@ -81,7 +95,7 @@ class ShellCommand(LoggingBuildStep):
         # This method was heavily guided by example from Amir Salihefendic @ amix.dk 
         # What is our policy on borrowed code?
         start_time = time.time()
-        proc = subprocess.Popen(cmd.split(" "))
+        proc = subprocess.Popen(cmd)
         while proc.poll() is None:
             time.sleep(0.1)
             cur_time = time.time()
@@ -90,4 +104,27 @@ class ShellCommand(LoggingBuildStep):
                 os.kill(proc.pid, signal.SIGKILL)
                 os.waitpid(-1, os.WNOHANG) 
                 return None
-        return proc.returncode                        
+        return proc.returncode           
+
+class Property():
+    def __init__(self):
+        self.properties = {}
+        self.build = None
+
+    def setProperty(self, name, value, source='Unknown'):
+        self.properties[name] = (value, source)
+
+    def getProperty(self, name):
+        if name in self.properties:
+            (val, src) = self.properties[name]
+            return val
+        else:
+            return None
+
+    def getProperties(self):
+        return self
+
+    def asDict(self):
+        return dict(self.properties)
+
+                 
