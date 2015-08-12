@@ -37,7 +37,7 @@ steps = []
 YOCTO_ABBASE = yjHome
 buildprops = Property()
 kwargs["properties"] = buildprops
-ab_props = {"workdir": workspace, "repository": os.environ.get("GIT_URL"), "builddir": workspace }
+ab_props = {"workdir": workspace, "repository": os.environ.get("GIT_URL"), "builddir": workspace}
 for k, v in ab_props.iteritems():
     buildprops.setProperty(k, v, "Auto")
 
