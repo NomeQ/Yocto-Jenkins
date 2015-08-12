@@ -1,23 +1,10 @@
 #!/bin/bash
-YJ_HOME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-PYENV_HOME=$YJ_HOME/.pyenv/
+export YJ_HOME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-export YJ_HOME
-cd $YJ_HOME
-
-if [ -d $PYENV_HOME ]; then
-	echo "Using existing virtual environment"
-else
-	echo "Creating new virtual environment"
-	virtualenv --no-site-packages $PYENV_HOME	
-fi
-
-. $PYENV_HOME/bin/activate
-
-if [ ! -d buildsteps ]; then
+if [ ! -d $YJ_HOME/buildsteps ]; then
         echo "Running buildstep tool"
-	./buildstep-tool.sh
+	$YJ_HOME/buildstep-tool.sh
 fi
 
-python ./buildSteps.py $@
+python $YJ_HOME/buildSteps.py $@
 

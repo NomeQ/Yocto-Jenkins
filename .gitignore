@@ -1,3 +1,6 @@
 *.py[cod]
 env/
 build/
+buildsteps/
+yocto-jenkins/
+.pyenv/
