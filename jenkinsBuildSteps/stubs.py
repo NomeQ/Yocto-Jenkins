@@ -77,10 +77,12 @@ class ShellCommand(LoggingBuildStep):
 	
     def start(self):
         LoggingBuildStep.start(self)
-        if type(self.command) is str:
-            self.command = self.command.split(" ")
+        #if type(self.command) is str:
+        #    self.command = self.command.split(" ")
+        print "Current Directory: " + os.getcwd()
+        print "Command: " + str(self.command)
 	if not hasattr(self, 'timeout'):
-            self.exit_status = subprocess.call(self.command)
+            self.exit_status = subprocess.call(self.command, shell=True)
         else:
             self.exit_status = self.timeoutCommand(self.command, self.timeout)
         self.commandComplete(self.command)
@@ -95,11 +97,11 @@ class ShellCommand(LoggingBuildStep):
         # This method was heavily guided by example from Amir Salihefendic @ amix.dk 
         # What is our policy on borrowed code?
         start_time = time.time()
-        proc = subprocess.Popen(cmd)
+        proc = subprocess.Popen(cmd, shell=True)
         while proc.poll() is None:
             time.sleep(0.1)
             cur_time = time.time()
-            if (cur_time - start_time) > (timeout/1000):
+            if (cur_time - start_time) > (timeout/10):
                 print "TIMEOUT: Killing " + self.name
                 os.kill(proc.pid, signal.SIGKILL)
                 os.waitpid(-1, os.WNOHANG) 
@@ -127,4 +129,7 @@ class Property():
     def asDict(self):
         return dict(self.properties)
 
-                 
+                
+class LogLineObserver():
+    def __init__(self):
+        pass 

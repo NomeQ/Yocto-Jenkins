@@ -8,8 +8,8 @@ if [ $# -eq 1 -a -d $1/$default ]; then
 	cp -r $directory ./
 	cd buildsteps
 else
-	mkdir buildsteps
-	cd buildsteps
+	mkdir $YJ_HOME/buildsteps
+	cd $YJ_HOME/buildsteps
 	wget -r -np -A.py -nH --cut-dirs=10 "http://git.yoctoproject.org/cgit/cgit.cgi/yocto-autobuilder/plain/lib/python2.7/site-packages/autobuilder/buildsteps/"
 fi
 
@@ -17,4 +17,5 @@ for f in $( ls . ); do
 	sed -i 's/from buildbot.[a-z]*.[a-z]*/from jenkinsBuildSteps.stubs/' "$f"
         sed -i 's/from twisted.python import log/ /' "$f"
 done
- 	
+
+cd $WORKSPACE

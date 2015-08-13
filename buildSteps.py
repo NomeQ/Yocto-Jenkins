@@ -11,7 +11,7 @@ sys.path.append(yjHome + "/buildsteps")
 # Parse .conf, env variables necessary for bitbake and some buildsteps
 # Copied from yocto-start-autobuilder
 parser = SafeConfigParser()
-parser.read('yocto-jenkins.conf')
+parser.read(os.path.join(yjHome, 'yocto-jenkins.conf'))
 print "Reading " + os.path.join(yjHome, "yocto-jenkins.conf")
 for section_name in parser.sections():
     for name, value in parser.items(section_name):
